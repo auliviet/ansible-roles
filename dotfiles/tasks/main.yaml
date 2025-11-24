@@ -1,0 +1,18 @@
+- name: Clone remote dotfiles repository localy.
+  ansible.builtin.git:
+    repo: "{{ dotfiles_remote_repo }}"
+    dest: "{{ dotfiles_local_repo }}"
+    version: "main"
+  become: false
+
+- name: Symlink dotfiles.
+  ansible.builtin.import_tasks: ./symlink.yaml
+
+- name: Set-up ZSH.
+  ansible.builtin.import_tasks: ./zsh.yaml
+
+- name: Set-up Vim.
+  ansible.builtin.import_tasks: ./vim.yaml
+
+- name: Set-up Tmux.
+  ansible.builtin.import_tasks: ./tmux.yaml
