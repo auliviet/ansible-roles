@@ -1,0 +1,57 @@
+- name: Install fzf (command-line fuzzy finder).
+  ansible.builtin.package:
+    name: fzf
+    state: present
+
+- name: Check if Oh-My-Zsh is installed.
+  ansible.builtin.stat:
+    path: "~/.oh-my-zsh"
+  register: ohmyzsh_installed
+
+- name: Install Oh-My-Zsh.
+  ansible.builtin.git:
+    repo: "https://github.com/ohmyzsh/ohmyzsh.git"
+    dest: "~/.oh-my-zsh"
+    version: "master"
+    depth: 1
+  when: not ohmyzsh_installed.stat.exists
+
+- name: Add zsh aliases to Oh-My-Zsh custom directory.
+  ansible.builtin.file:
+    src: "{{ dotfiles_local_repo }}/{{ item }}"
+    dest: "~/.oh-my-zsh/custom/{{ item }}"
+    state: link
+  become: false
+  with_items: "{{ dotfiles_aliases }}"
+
+- name: Check if zsh-autosuggestions is installed.
+  ansible.builtin.stat:
+    path: "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+  register: zsh_autosuggestions_installed
+
+- name: Install zsh-autosuggestions.
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-autosuggestions.git"
+    dest: "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    version: "master"
+    depth: 1
+  when: not zsh_autosuggestions_installed.stat.exists
+
+- name: Check if zsh-completions is installed.
+  ansible.builtin.stat:
+    path: "~/.oh-my-zsh/custom/plugins/zsh-completions"
+  register: zsh_completions_installed
+
+- name: Install zsh-autosuggestions.
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-completions"
+    dest: "~/.oh-my-zsh/custom/plugins/zsh-completions"
+    version: "master"
+    depth: 1
+  when: not zsh_completions_installed.stat.exists
+
+- name: Change user shell to zsh.
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
