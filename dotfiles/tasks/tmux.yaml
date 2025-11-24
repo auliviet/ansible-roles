@@ -1,0 +1,11 @@
+- name: Check if Tmux Plugin Manager (TPM) is installed.
+  ansible.builtin.stat:
+    path: "~/.tmux/plugins/tpm"
+  register: tpm_installed
+
+- name: Install TPM.
+  ansible.builtin.git:
+    repo: "https://github.com/tmux-plugins/tpm.git"
+    dest: "~/.tmux/plugins/tpm"
+    version: "master"
+  when: not tpm_installed.stat.exists
