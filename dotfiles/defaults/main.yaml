@@ -1,0 +1,14 @@
+# Default config
+# Edit these variables in your playbook
+
+dotfiles_home: "~"
+dotfiles_remote_repo: "https://github.com/auliviet/dotfiles.git"
+dotfiles_local_repo: "{{ dotfiles_home }}/.dotfiles"
+dotfiles_files:
+  - .gitignore
+  - .gitconfig
+  - .tmux.conf
+  - .vimrc
+  - .zshrc
+dotfiles_aliases:
+  - aliases.zsh
