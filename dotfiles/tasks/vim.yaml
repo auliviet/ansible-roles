@@ -1,0 +1,35 @@
+- name: Create source directory for vim-sensible.
+  ansible.builtin.file:
+    path: "~/.vim/pack/tpope/start"
+    state: directory
+    mode: "0755"
+
+- name: Check if vim-sensible is already installed.
+  ansible.builtin.stat:
+    path: "~/.vim/pack/tpope/start/plugin/sensible.vim"
+  register: vim_sensible_installed
+
+- name: Clone vim-sensible.
+  ansible.builtin.git:
+    repo: "https://tpope.io/vim/sensible.git"
+    dest: "~/.vim/pack/tpope/start"
+    version: "master"
+  when: not vim_sensible_installed.stat.exists
+
+- name: Create source directory for vim-cattpuccin.
+  ansible.builtin.file:
+    path: "~/.vim/pack/vendor/start/catppuccin"
+    state: directory
+    mode: "0755"
+
+- name: Check if vim-cattpuccinn is already installed.
+  ansible.builtin.stat:
+    path: "~/.vim/pack/vendor/start/catppuccin/vim.git"
+  register: vim_cattpuccinn_installed
+
+- name: Clone vim-cattpuccinn.
+  ansible.builtin.git:
+    repo: "https://github.com/catppuccin/vim.git"
+    dest: "~/.vim/pack/vendor/start/catppuccin"
+    version: "main"
+  when: not vim_cattpuccinn_installed.stat.exists
