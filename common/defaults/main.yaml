@@ -1,0 +1,7 @@
+common_packages:
+  - git
+  - tldr
+  - tree
+  - tmux
+  - vim
+  - zsh
