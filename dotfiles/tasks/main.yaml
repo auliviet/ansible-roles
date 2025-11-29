@@ -3,6 +3,7 @@
     repo: "{{ dotfiles_remote_repo }}"
     dest: "{{ dotfiles_local_repo }}"
     version: "main"
+    force: true
   become: false
 
 - name: Symlink dotfiles.
