@@ -14,12 +14,6 @@
   with_indexed_items: "{{ existing_dotfile_info.results }}"
   register: removed_dotfiles
 
-- name: Output removed dotfiles summary.
-  ansible.builtin.debug:
-    msg: "Removed file: {{ dotfiles_home }}/{{ dotfiles_files[item.0] }}"
-  when: removed_dotfiles is defined and removed_dotfiles.changed
-  loop: "{{ existing_dotfile_info.results }}"
-
 - name: Link dotfiles into home folder.
   ansible.builtin.file:
     src: "{{ dotfiles_local_repo }}/{{ item }}"
